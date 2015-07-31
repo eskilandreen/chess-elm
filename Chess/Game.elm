@@ -13,7 +13,7 @@ type alias Game =
     { chess : Chess
     , mousePos : (Int, Int)
     , selectedSq : Maybe Sq
-    , clicks : Int
+    , redraw : Bool
     }
 
 
@@ -22,7 +22,7 @@ newGame =
     { chess = newChess
     , mousePos = (0, 0)
     , selectedSq = Nothing
-    , clicks = 0
+    , redraw = True
     }
 
 

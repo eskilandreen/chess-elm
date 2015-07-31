@@ -21,14 +21,12 @@ main =
             ]
         foldp = Signal.foldp update newGame signals
     in
-        Signal.map draw foldp
+        Signal.map draw (Signal.filter shouldRedraw newGame foldp)
 
 
-shouldRedraw : Update -> Bool
-shouldRedraw update =
-    case update of
-        MouseMove _ -> False
-        MouseClick -> True
+shouldRedraw : Game -> Bool
+shouldRedraw game =
+    game.redraw
 
 
 type Update
@@ -38,12 +36,16 @@ type Update
 
 update : Update -> Game -> Game
 update update game =
-    case update of
-        MouseMove (x, y) ->
-            { game | mousePos <- (x - round windowCenterX, round windowCenterY - y) }
-        MouseClick ->
-            Debug.log "Waargth!" (posToSq game.mousePos)
-                |> Maybe.map (move game)
-                |> Maybe.withDefault game
-
-
+    let
+        game' = { game | redraw <- True }
+    in
+        case update of
+            MouseMove (x, y) ->
+                { game'
+                    | mousePos <- (x - round windowCenterX, round windowCenterY - y)
+                    , redraw <- False
+                }
+            MouseClick ->
+                posToSq game.mousePos
+                    |> Maybe.map (move game')
+                    |> Maybe.withDefault game'

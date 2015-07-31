@@ -903,10 +903,10 @@ Elm.Chess.Game.make = function (_elm) {
    });
    var newGame = {_: {}
                  ,chess: $Chess$Chess.newChess
-                 ,clicks: 0
                  ,mousePos: {ctor: "_Tuple2"
                             ,_0: 0
                             ,_1: 0}
+                 ,redraw: true
                  ,selectedSq: $Maybe.Nothing};
    var Game = F4(function (a,
    b,
@@ -914,8 +914,8 @@ Elm.Chess.Game.make = function (_elm) {
    d) {
       return {_: {}
              ,chess: a
-             ,clicks: d
              ,mousePos: b
+             ,redraw: d
              ,selectedSq: c};
    });
    _elm.Chess.Game.values = {_op: _op
@@ -3212,7 +3212,6 @@ Elm.Main.make = function (_elm) {
    $Basics = Elm.Basics.make(_elm),
    $Chess$Draw = Elm.Chess.Draw.make(_elm),
    $Chess$Game = Elm.Chess.Game.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
    $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
@@ -3222,22 +3221,26 @@ Elm.Main.make = function (_elm) {
    var update = F2(function (update,
    game) {
       return function () {
-         switch (update.ctor)
-         {case "MouseClick":
-            return $Maybe.withDefault(game)($Maybe.map($Chess$Game.move(game))(A2($Debug.log,
-              "Waargth!",
-              $Chess$Draw.posToSq(game.mousePos))));
-            case "MouseMove":
-            switch (update._0.ctor)
-              {case "_Tuple2":
-                 return _U.replace([["mousePos"
-                                    ,{ctor: "_Tuple2"
-                                     ,_0: update._0._0 - $Basics.round($Chess$Draw.windowCenterX)
-                                     ,_1: $Basics.round($Chess$Draw.windowCenterY) - update._0._1}]],
-                   game);}
-              break;}
-         _U.badCase($moduleName,
-         "between lines 41 and 47");
+         var game$ = _U.replace([["redraw"
+                                 ,true]],
+         game);
+         return function () {
+            switch (update.ctor)
+            {case "MouseClick":
+               return $Maybe.withDefault(game$)($Maybe.map($Chess$Game.move(game$))($Chess$Draw.posToSq(game.mousePos)));
+               case "MouseMove":
+               switch (update._0.ctor)
+                 {case "_Tuple2":
+                    return _U.replace([["mousePos"
+                                       ,{ctor: "_Tuple2"
+                                        ,_0: update._0._0 - $Basics.round($Chess$Draw.windowCenterX)
+                                        ,_1: $Basics.round($Chess$Draw.windowCenterY) - update._0._1}]
+                                      ,["redraw",false]],
+                      game$);}
+                 break;}
+            _U.badCase($moduleName,
+            "between lines 42 and 51");
+         }();
       }();
    });
    var MouseClick = {ctor: "MouseClick"};
@@ -3245,14 +3248,8 @@ Elm.Main.make = function (_elm) {
       return {ctor: "MouseMove"
              ,_0: a};
    };
-   var shouldRedraw = function (update) {
-      return function () {
-         switch (update.ctor)
-         {case "MouseClick": return true;
-            case "MouseMove": return false;}
-         _U.badCase($moduleName,
-         "between lines 29 and 31");
-      }();
+   var shouldRedraw = function (game) {
+      return game.redraw;
    };
    var main = function () {
       var mouseClick = A2($Signal.map,
@@ -3271,7 +3268,10 @@ Elm.Main.make = function (_elm) {
       signals);
       return A2($Signal.map,
       $Chess$Draw.draw,
-      foldp);
+      A3($Signal.filter,
+      shouldRedraw,
+      $Chess$Game.newGame,
+      foldp));
    }();
    _elm.Main.values = {_op: _op
                       ,main: main
