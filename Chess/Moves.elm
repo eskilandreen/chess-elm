@@ -11,6 +11,7 @@ import List
 import Chess.Color exposing ( Color (..), Player, otherColor )
 import Chess.Piece exposing ( Piece (..), Type (..), belongsTo )
 import Chess.Board exposing ( Board, Sq, squares, getPieceAt, sqAdd, movePiece, sqY)
+import Chess.Util exposing ( mfilter, combinations, catMaybes )
 
 
 move : Player -> Board -> Sq -> Sq -> Maybe Board
@@ -178,28 +179,3 @@ playerPieces player board =
         pairs = List.map2 (,) squares pieces
     in
         List.filter hasPlayerPiece pairs
-
-
-combinations : List Int -> List Int -> List (Int, Int)
-combinations first second =
-    let
-        fst = List.concat (List.map (List.repeat (List.length second)) first)
-        snd = List.concat (List.repeat (List.length first) second)
-    in
-       List.map2 (,) fst snd
-
-
-catMaybes : List (Maybe Sq) -> List Sq
-catMaybes xs =
-    case xs of
-        [] -> []
-        Nothing::xs' -> catMaybes xs'
-        (Just x)::xs' -> x::catMaybes xs'
-
-
-mfilter : (a -> Bool) -> Maybe a -> Maybe a
-mfilter func maybe =
-    case maybe of
-        Just a ->
-            if func a then Just a else Nothing
-        Nothing -> Nothing

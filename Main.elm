@@ -13,20 +13,15 @@ import Chess.Game exposing (Game, newGame, move)
 main : Signal Element
 main =
     let
-        mouseMove = Signal.map MouseMove Mouse.position
-        mouseClick = Signal.map (\x -> MouseClick) Mouse.clicks
-        signals = Signal.mergeMany
-            [ mouseMove
-            , mouseClick
-            ]
-        foldp = Signal.foldp update newGame signals
+        mouseMoves = Signal.map MouseMove Mouse.position
+        mouseClicks = Signal.map (\x -> MouseClick) Mouse.clicks
+        shouldRedraw game = game.redraw
     in
-        Signal.map draw (Signal.filter shouldRedraw newGame foldp)
-
-
-shouldRedraw : Game -> Bool
-shouldRedraw game =
-    game.redraw
+        [mouseMoves, mouseClicks]
+            |> Signal.mergeMany
+            |> Signal.foldp update newGame
+            |> Signal.filter shouldRedraw newGame
+            |> Signal.map draw
 
 
 type Update
