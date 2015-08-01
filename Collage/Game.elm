@@ -1,4 +1,4 @@
-module Canvas.Game
+module Collage.Game
     ( Game
     , newGame
     , move
