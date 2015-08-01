@@ -7,9 +7,11 @@ syntax and language features so this was fairly straight forward. The Haskell
 code makes use of certain features not available in Elm, particularly
 monads and list comprehensions.
 
-There are two implementations. The one called Canvas draws to an HTML canvas
-and handles input directly. The one called VirtualDom draws to an HTML table
-and uses onClick events for input.
+There are three implementations:
+
+* Canvas draws to an HTML canvas and handles input directly
+* VirtualDom draws to an HTML table and uses onClick events for input
+* Element draws using Graphics.Element and handles input using Graphics.Input
 
 You can try it out at http://mtak.github.io/chess-elm/. You can build the code
 by running eg `elm-make VirtualDom/Main.elm --output virtualdom.html` and
