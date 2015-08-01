@@ -1,4 +1,4 @@
-module Canvas.Draw
+module Collage.Draw
     ( draw
     , posToSq
     , windowCenterY
@@ -11,7 +11,7 @@ import List
 import Text
 import Color
 
-import Canvas.Game exposing (Game)
+import Collage.Game exposing (Game)
 import Chess.Chess exposing (Tile, Status (..), possibleMoves)
 import Chess.Piece exposing (Piece (..))
 import Chess.Board exposing (Sq, sqX, sqY, mkSq)

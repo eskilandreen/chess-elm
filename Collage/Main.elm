@@ -1,4 +1,4 @@
-module Canvas.Main where
+module Collage.Main where
 
 import Signal
 import Mouse
@@ -6,8 +6,8 @@ import List
 import String
 import Debug
 
-import Canvas.Draw exposing (draw, posToSq, windowCenterX, windowCenterY)
-import Canvas.Game exposing (Game, newGame, move)
+import Collage.Draw exposing (draw, posToSq, windowCenterX, windowCenterY)
+import Collage.Game exposing (Game, newGame, move)
 import Chess.Util exposing (splitInto)
 import Graphics.Element exposing (Element)
 
