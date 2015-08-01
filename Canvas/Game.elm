@@ -1,4 +1,4 @@
-module Chess.Game
+module Canvas.Game
     ( Game
     , newGame
     , move

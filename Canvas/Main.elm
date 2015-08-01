@@ -1,13 +1,16 @@
+module Canvas.Main where
+
 import Signal
 import Mouse
 import List
 import String
 import Debug
 
-import Graphics.Element exposing (Element)
+import Canvas.Draw exposing (draw, posToSq, windowCenterX, windowCenterY)
+import Canvas.Game exposing (Game, newGame, move)
 import Chess.Util exposing (splitInto)
-import Chess.Draw exposing (draw, posToSq, windowCenterX, windowCenterY)
-import Chess.Game exposing (Game, newGame, move)
+import Graphics.Element exposing (Element)
+
 
 
 main : Signal Element

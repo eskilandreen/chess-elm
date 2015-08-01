@@ -1,4 +1,4 @@
-module Chess.Draw
+module Canvas.Draw
     ( draw
     , posToSq
     , windowCenterY
@@ -10,13 +10,17 @@ import String
 import List
 import Text
 import Color
-import Graphics.Element exposing (Element, flow, down, show, image, flow, down, right, leftAligned, rightAligned, width)
-import Graphics.Collage exposing (Form, collage, toForm, move, square, defaultLine, outlined)
+
+import Canvas.Game exposing (Game)
 import Chess.Chess exposing (Tile, Status (..), possibleMoves)
 import Chess.Piece exposing (Piece (..))
 import Chess.Board exposing (Sq, sqX, sqY, mkSq)
 import Chess.Color exposing (Color (..))
-import Chess.Game exposing (Game)
+
+import Graphics.Element exposing (Element, flow, down, show, image, flow, down, right, leftAligned, rightAligned, width)
+import Graphics.Collage exposing (Form, collage, toForm, move, square, defaultLine, outlined)
+
+
 
 
 tileHeight : Float
@@ -104,7 +108,7 @@ filename color piece =
                 Piece c t -> (toString t) ++ (toString c)
         enc = String.toLower (pieceEnc ++ colorEnc)
     in
-       "pieces/Chess_" ++ enc ++ "40.png"
+        "https://raw.githubusercontent.com/mtak/chess-elm/master/pieces/Chess_" ++ enc ++ "40.png"
 
 
 posToSq : (Int, Int) -> Maybe Sq
